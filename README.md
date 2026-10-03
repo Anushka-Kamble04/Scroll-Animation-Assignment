@@ -2,7 +2,9 @@
 
 A hero section for a fictional e-commerce sale. A delivery van drives across the screen as you scroll, filling in the headline and revealing the offer cards one by one.
 
-- **Live demo:** `https://anushka-kamble04.github.io/Scroll-Animation-Assignment/`
+## Live Demo
+
+[Live demo](https://anushka-kamble04.github.io/Scroll-Animation-Assignment/)
 
 ## Features
 
