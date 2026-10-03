@@ -1,0 +1,233 @@
+:root {
+  --plum: #1b0b2e;
+  --cream: #fff4e0;
+  --gold: #ffb627;
+  --pink: #ff3e7f;
+  --teal: #19c3b1;
+  --font: "Bricolage Grotesque", "Segoe UI", Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--plum);
+}
+
+body {
+  font-family: var(--font);
+  color: var(--cream);
+  overflow-x: hidden;
+}
+
+/* 3 screens of scroll distance drive the animation */
+.scroll {
+  height: 300vh;
+  position: relative;
+}
+.hero {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto 1fr auto;
+  row-gap: 1rem;
+  padding: 1.25rem clamp(1rem, 4vw, 3rem) clamp(1.25rem, 4vh, 2.5rem);
+  background:
+    radial-gradient(
+      60vmax 40vmax at 85% -10%,
+      rgba(255, 62, 127, 0.28),
+      transparent 60%
+    ),
+    radial-gradient(
+      50vmax 40vmax at 0% 110%,
+      rgba(25, 195, 177, 0.2),
+      transparent 60%
+    ),
+    var(--plum);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.brand {
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  color: var(--gold);
+}
+.cta {
+  color: var(--plum);
+  background: var(--gold);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+.cta:hover {
+  transform: translateY(-2px);
+  background: var(--cream);
+}
+.cta:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 3px;
+}
+
+/* Headline: letters start as outlines, fill in as the van drives past */
+.headline {
+  grid-row: 2;
+  align-self: end;
+  display: flex;
+  justify-content: center;
+  font-weight: 800;
+  line-height: 1;
+  padding-bottom: 1rem;
+  font-size: clamp(1.7rem, 7.4vw, 7rem);
+  letter-spacing: 0.18em;
+  margin-right: -0.18em;
+}
+.ch {
+  display: inline-block;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 244, 224, 0.45);
+  transition:
+    color 0.35s,
+    -webkit-text-stroke-color 0.35s;
+  will-change: transform, opacity;
+}
+.ch.gap {
+  width: 0.5em;
+}
+.ch.lit {
+  color: var(--gold);
+  -webkit-text-stroke-color: var(--gold);
+}
+
+/* Road, trail and van */
+.road {
+  grid-row: 3;
+  position: relative;
+  height: clamp(80px, 16vh, 140px);
+  background: #120620;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.road::after {
+  /* lane dashes */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  opacity: 0.25;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--cream) 0 28px,
+    transparent 28px 56px
+  );
+}
+.trail {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--pink), var(--gold));
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+  opacity: 0.9;
+}
+.van {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  height: 80%;
+  aspect-ratio: 240 / 110;
+  will-change: transform;
+  z-index: 2;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
+}
+.van-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Stats */
+.stats {
+  grid-row: 4;
+  align-self: start;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(0.6rem, 1.5vw, 1.2rem);
+  padding-top: 0.5rem;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: clamp(0.9rem, 2vw, 1.6rem);
+  border-radius: 14px;
+  color: var(--plum);
+  opacity: 0; /* hidden until the van reaches the card (GSAP reveals it) */
+  will-change: transform, opacity;
+}
+.stat strong {
+  font-size: clamp(1.8rem, 4.2vw, 3.6rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.stat span {
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  line-height: 1.35;
+  max-width: 20ch;
+}
+/* Each card keeps its own colour; it simply fades and swipes up into view */
+.s1 {
+  background: var(--gold);
+}
+.s2 {
+  background: var(--teal);
+}
+.s3 {
+  background: var(--pink);
+  color: var(--cream);
+}
+.s4 {
+  background: var(--cream);
+}
+
+@media (max-width: 700px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .road {
+    height: clamp(72px, 12vh, 100px);
+  }
+  .headline {
+    letter-spacing: 0.1em;
+    margin-right: -0.1em;
+    font-size: clamp(1.4rem, 7.6vw, 3rem);
+  }
+  .ch {
+    -webkit-text-stroke-width: 1px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ch {
+    transition: none;
+  }
+}
